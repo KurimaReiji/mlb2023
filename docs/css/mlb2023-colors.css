@@ -1,0 +1,97 @@
+:root {
+  --angels-red: #ba0021;
+  --angels-blue: #003263;
+  --angels-maroon: #862633;
+  --angels-silver: #C4CED4;
+  --athletics-green: #006141;
+  --athletics-darkgreen: #003831;
+  --athletics-gold: #EFB21E;
+  --athletics-gray: #A2AAAD;
+  --athletics-yellow: #FFCD00;
+  --astros-orange: #eb6e1f;
+  --astros-darkblue: #002d62;
+  --mariners-green: #005c5c;
+  --mariners-navy: #0c2c56;
+  --mariners-aqua: #6ec2c4;
+  --mariners-red: #D50032;
+  --rangers-red: #c0111f;
+  --rangers-blue: #003278;
+  --rangers-white: white;
+
+  --guardians-navy: #00385D;
+  --guardians-red: #E50022;
+  --tigers-navy: #0C2340;
+  --tigers-orange: #FA4616;
+  --tigers-white: white;
+  --royals-blue: #004687;
+  --royals-gold: #BD9B60;
+  --twins-navy: #002B5C;
+  --twins-scarlet-red: #D31145;
+  --whitesox-black: #27251F;
+  --whitesox-silver: #C4CED4;
+
+  --orioles-orange: #df4601;
+  --orioles-black: black;
+  --redsox-red: #bd3039;
+  --redsox-blue: #0c2340;
+  --yankees-blue: #003087;
+  --yankees-red: #e4002c;
+  --yankees-navy: #0c2340;
+  --yankees-gray: #c4ced3;
+  --rays-navy: #092c5c;
+  --rays-columbia-blue: #8FBCE6;
+  --bluejays-blue: #134A8E;
+  --bluejays-navy: #1D2D5C;
+  --bluejays-red: #E8291C;
+  --bluejays-white: white;
+  --bluejays-powderblue: #6ba9dc;
+
+  --dodger-blue: #005a9c;
+  --dodger-red: #EF3E42;
+  --dodger-silver: #A5ACAF;
+  --giants-orange: #fd5a1e;
+  --giants-black: #27251F;
+  --giants-beige: #EFD19F;
+  --giants-gold: #AE8F6F;
+  --padres-brown: #2F241D;
+  --padres-gold: #ffc425;
+  --padres-blue: #002D62;
+  --padres-gray: #A2AAAD;
+  --rockies-purple: #33006f;
+  --rockies-silver: #C4CED4;
+  --rockies-black: #000000;
+  --dbacks-red: #a71930;
+  --dbacks-sand: #e3d4ad;
+  --dbacks-black: black;
+
+  --cubs-blue: #0E3386;
+  --cubs-red: #CC3433;
+  --reds-red: #C6011F;
+  --reds-black: black;
+  --brewers-yellow: #FFC52F;
+  --brewers-navy: #12284B;
+  --cardinals-red: #C41E3A;
+  --cardinals-navy: #0C2340;
+  --cardinals-yellow: #FEDB00;
+  --cardinals-lightblue: #add8e6;
+  --pirates-black: #27251F;
+  --pirates-gold: #FDB827;
+
+  --phillies-red: #E81828;
+  --phillies-blue: #002D72;
+  --phillies-white: white;
+  --nationals-red: #AB0003;
+  --nationals-blue: #14225A;
+  --nationals-white: white;
+  --mets-blue: #002D72;
+  --mets-orange: #FF5910;
+  --braves-scarlet: #CE1141;
+  --braves-navy: #13274F;
+  --marlins-miamiblue: #00A3E0;
+  --marlins-red: #EF3340;
+  --marlins-black: black;
+
+  --al-red: #bf0d3e;
+  --nl-navy: #041e42;
+  --mlb-blue: #0072CE; /* JACKIE ROBINSON DAY */
+}

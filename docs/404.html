@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLB 2023</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Mono&display=swap');
+  </style>
+  <style>
+    :root {
+      --bg-color: cornsilk;
+    }
+    body {
+      margin: 0;
+      background: var(--bg-color);
+    }
+    .container {
+      box-sizing: border-box;
+      margin-block: min(4px, 1vw);
+      padding-inline: min(4px,1vw);
+      padding-block: 0 0;
+      min-height: calc(100svh - 50px);
+    }
+  </style>
+  <link rel="stylesheet" href="/mlb2023/css/mlb2023-colors.css">
+</head>
+<body>
+  <mlb-router></mlb-router>
+
+  <div class="container">
+    <mlb-above500></mlb-above500>
+  </div>
+
+  <script type="importmap">
+{
+  "imports": {
+    "teams": "/mlb2023/js/mlb2023-teams.js",
+    "utils": "/mlb2023/js/mlb2023-utils.js",
+    "above500": "/mlb2023/js/mlb-above500.js",
+    "GameResult": "/mlb2023/js/GameResult.js",
+    "router": "/mlb2023/js/mlb2023-router.js"
+  }
+}
+  </script>
+  <script type="module">
+import { MlbRouter, locationHandler } from "router";
+import { MlbAbove500 } from "above500";
+import { fetchOptions, responseToJson } from "utils";
+import { toNicknames } from "teams";
+import { toGameResult} from "GameResult";
+
+const json = "https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json";
+fetch(json, {
+    cache: "no-cache",
+  })
+  .then(responseToJson)
+  .then(inputs => inputs.map(toNicknames).map(toGameResult))
+  .then(data=>{
+    document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: data}));
+  })
+  .catch(console.error);
+
+locationHandler();
+
+const div = document.querySelector(".container");
+div.style.width = getComputedStyle(div).width;
+
+  </script>
+</body>
+</html>
