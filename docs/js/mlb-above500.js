@@ -507,7 +507,7 @@ function tweet({ league, division, series }) {
   const url = "https://github.com/KurimaReiji/mlb2023";
   const title = get_title(league, division);
   const tw = series
-    .map(({ team, win, loss }) => `${win}-${loss} ${Teams.hashtag(team)}`);
+    .map(({ team, win, loss }) => `${win}-${loss} ${Teams.hashtag(team)} `);
   return [title, tw.join("\n"), url].join("\n");
 }
 
