@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1024">
+  <title>Division vs Division</title>
+  <style>
+    :root {
+      --bg-color: cornsilk;
+      --head-color: #eee;
+      --border-color: #333;
+      --thin: solid 1px var(--border-color);
+      --thick: solid 3px var(--border-color);
+      --large-fontsize: 18px;/*1.125em;*/
+    }
+    body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-color);
+    }
+
+    table {
+      margin: 1rem;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding-inline: .25em;
+    }
+
+    th {
+      white-space: nowrap;
+      font-weight: normal;
+      padding-block: .25em;
+    }
+
+    td {
+      text-align: center;
+      min-width: 5em;
+    }
+
+    [data-item="Division"] {
+      width: 7.5em;
+    }
+
+    [data-item="Division"],
+    [data-division] th {
+      text-align: left;
+      font-weight: bold;
+      padding-inline: .5em .25em;
+    }
+
+    [data-team] [data-item="team"] {
+      text-align: right;
+      padding-inline: 0 .5em;
+    }
+
+    [data-division] th,
+    [data-division] td,
+    [data-team] th,
+    [data-team] td {
+      padding-block: .5em 0;
+    }
+
+    [data-row="wpct"] th,
+    [data-row="wpct"] td {
+      padding-block: 0 .5em;
+    }
+
+    thead,
+    [data-division] + tr,
+    [data-division] {
+      font-size: var(--large-fontsize);
+    }
+
+    td[data-above500="above"] {
+      font-weight: bold;
+    }
+
+    [data-division] {
+      border-top: var(--thick);
+    }
+
+    [data-division] + tr {
+      border-bottom: var(--thin);
+    }
+    
+    tr:nth-last-of-type(1){
+      border-bottom: var(--thick);
+    }
+
+    [data-item="AL"],
+    [data-item="Total"] {
+      border-left: var(--thick);
+    }
+
+    [data-item="NL"],
+    [data-item="Others"] {
+      border-right: var(--thick);
+    }
+
+    [data-item="AL West"] {
+      border-right: var(--thin);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--bg-color);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 0 1em;
+      padding: 1em 0 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Division vs Division</h1>
+  </div>
+  <script src="js/divVSdiv.js" type="module"></script>
+</body>
+</html>

@@ -8,3 +8,5 @@
 - [NL West](https://kurimareiji.github.io/mlb2023/above500/NLwest)
 - [NL Central](https://kurimareiji.github.io/mlb2023/above500/NLcentral)
 - [NL East](https://kurimareiji.github.io/mlb2023/above500/NLeast)
+
+## [Division vs Division](https://kurimareiji.github.io/mlb2023/divVSdiv.html)
