@@ -2,7 +2,7 @@ import { MlbTeams as Teams, toNicknames } from "./mlb2023-teams.js";
 import { toGameResult } from "./GameResult.js";
 import { createElement, winpct, teams_by_wpct, get_records } from "./mlb2023-utils.js";
 
-const url = `../mlb2023-results.json`;
+const url = `https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json`;
 const inputs = await (await fetch(url, { cache: "no-cache" })).json();
 const games = inputs.map(toNicknames).map(toGameResult);
 
