@@ -69,6 +69,7 @@ const svgTemplate = `
       stroke: var(--team-text-color, var(--team-color));
       stroke-width: 1;
       font-family: 'Noto Sans Mono', sans-serif;
+      font-size: 20px;
       transform: translate(10px, 0);
     }
 
