@@ -10,3 +10,7 @@
 - [NL East](https://kurimareiji.github.io/mlb2023/above500/NLeast)
 
 ## [Division vs Division](https://kurimareiji.github.io/mlb2023/divVSdiv.html)
+
+## Related Works
+
+- [mlb2022](https://github.com/KurimaReiji/mlb2022)
