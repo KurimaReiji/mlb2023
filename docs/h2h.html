@@ -42,7 +42,7 @@ import { fetchJson } from "utils";
 import { GameResult } from "GameResult";
 import { MlbH2h } from "h2h";
 
-const scheduledGames = await fetchJson("/mlb2023-scheduled.json");
+const scheduledGames = await fetchJson("./mlb2023-scheduled.json");
 const results = await fetchJson("https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json");
 
 const games = scheduledGames
