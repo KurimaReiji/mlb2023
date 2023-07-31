@@ -9,6 +9,16 @@
 - [NL Central](https://kurimareiji.github.io/mlb2023/above500/NLcentral)
 - [NL East](https://kurimareiji.github.io/mlb2023/above500/NLeast)
 
+## Head-to-Head Results
+
+- [Angels](https://kurimareiji.github.io/mlb2023/h2h.html?team=Angels)
+- [Orioles](https://kurimareiji.github.io/mlb2023/h2h.html?team=Orioles)
+- [Twins](https://kurimareiji.github.io/mlb2023/h2h.html?team=Twins)
+- [Rangers](https://kurimareiji.github.io/mlb2023/h2h.html?team=Rangers)
+- [Braves](https://kurimareiji.github.io/mlb2023/h2h.html?team=Braves)
+- [Reds](https://kurimareiji.github.io/mlb2023/h2h.html?team=Reds)
+- [Dodgers](https://kurimareiji.github.io/mlb2023/h2h.html?team=Dodgers)
+
 ## [Division vs Division](https://kurimareiji.github.io/mlb2023/divVSdiv.html)
 
 ## Related Works

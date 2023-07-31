@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/mlb2023/css/mlb2023-colors.css">
+  <title>2023 Head-to-Head Results</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Mono&display=swap');
+  </style>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      height: 100svh;
+    }
+    body>div:nth-of-type(1) {
+      height: 100svh;
+    }
+    mlb-h2h {
+      display: block;
+      height: 100svh;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <mlb-h2h team="Angels"></mlb-h2h>
+  </div>
+  <script type="importmap">
+    {
+      "imports": {
+        "teams": "/mlb2023/js/mlb2023-teams.js",
+        "utils": "/mlb2023/js/mlb2023-utils.js",
+        "h2h": "/mlb2023/js/mlb-h2h.js",
+        "logos": "/mlb2023/js/mlb-logos.js",
+        "GameResult": "/mlb2023/js/GameResult.js"
+      }
+    }
+  </script>
+  <script type="module">
+import { fetchJson } from "utils";
+import { GameResult } from "GameResult";
+import { MlbH2h } from "h2h";
+
+const scheduledGames = await fetchJson("/mlb2023-scheduled.json");
+const results = await fetchJson("/mlb2023-results.json");
+
+const games = scheduledGames
+  .map((g) => {
+    const obj = results.find((o) => o.gamePk === g.gamePk);
+    if (!obj) return g;
+    const r = new GameResult(obj);
+    const [date, winner, loser, score] = [r.date, r.winner, r.loser, obj.score];
+    return Object.assign(g, { date, winner, loser, score });
+  });
+
+document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: games }));
+  </script>
+  <script type="module">
+import { MlbTeams as Teams } from "teams";
+const route = (href) => {
+  if (href === window.location.href) return;
+  window.history.pushState({}, null, href);
+  locationHandler();
+}
+const locationHandler = () => {
+  const url = new URL(window.location);
+  const h2h = document.querySelector("mlb-h2h");
+  try {
+    const team = url.searchParams.get("team") || "Angels";
+    if(Teams.find(team).name){
+      h2h.setAttribute("team", team);
+    }else{
+      throw new Error("not found");
+    }
+  } catch (error) {
+    console.log(error);
+    route("/mlb2023/h2h.html?team=Angels");
+  }
+}
+window.addEventListener("popstate", (_) => {
+  locationHandler();
+});
+document.addEventListener("TeamSelected", (e) => {
+  route(e.detail.href);
+});
+locationHandler();
+  </script>
+</body>
+</html>

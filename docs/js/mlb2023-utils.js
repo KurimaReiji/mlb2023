@@ -308,6 +308,17 @@ const svgdownload = (filename = "output.png", svg = null) => {
   });
 };
 
+const fetchJson = (url) => {
+  return fetch(url, {
+    cache: "no-cache",
+  })
+    .then(responseToJson)
+    .then(data => {
+      return data;
+    })
+    .catch(console.error);
+}
+
 export {
   daysFromOpeningDay,
   winpct,
@@ -328,4 +339,5 @@ export {
   load_css_rules,
   load_font,
   svgdownload,
+  fetchJson
 }

@@ -1,7 +1,8 @@
 import { MlbTeams as Teams } from "./mlb2023-teams.js";
 
 class GameResult {
-  constructor({ date, home, road, score, status }) {
+  constructor({ gamePk, date, home, road, score, status }) {
+    this.gamePk = gamePk;
     this.date = date;
     const scores = score.replace(/\s+/g, "").split("-").map((s) => Number(s));
     this.sign = Math.sign(scores[0] - scores[1]);
