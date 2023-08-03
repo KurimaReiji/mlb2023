@@ -24,14 +24,14 @@
 </head>
 <body>
   <div>
-    <mlb-h2h team="Angels"></mlb-h2h>
+    <mlb-h2h></mlb-h2h>
   </div>
   <script type="importmap">
     {
       "imports": {
         "teams": "/mlb2023/js/mlb2023-teams.js",
         "utils": "/mlb2023/js/mlb2023-utils.js",
-        "h2h": "/mlb2023/js/mlb-h2h.js",
+        "h2h": "/mlb2023/js/mlb-h2h.js?v=0803",
         "logos": "/mlb2023/js/mlb-logos.js",
         "GameResult": "/mlb2023/js/GameResult.js"
       }
@@ -42,19 +42,8 @@ import { fetchJson } from "utils";
 import { GameResult } from "GameResult";
 import { MlbH2h } from "h2h";
 
-const scheduledGames = await fetchJson("./mlb2023-scheduled.json");
-const results = await fetchJson("https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json");
-
-const games = scheduledGames
-  .map((g) => {
-    const obj = results.find((o) => o.gamePk === g.gamePk);
-    if (!obj) return g;
-    const r = new GameResult(obj);
-    const [date, winner, loser, score] = [r.date, r.winner, r.loser, obj.score];
-    return Object.assign(g, { date, winner, loser, score });
-  });
-
-document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: games }));
+const results = await fetchJson("/mlb2023-results.json");
+document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: results }));
   </script>
   <script type="module">
 import { MlbTeams as Teams } from "teams";

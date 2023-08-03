@@ -1,7 +1,9 @@
 import { MlbTeams as Teams } from "teams";
-import { to_uniq, load_css_rules, load_font, svgdownload } from "utils";
+import { to_uniq, load_css_rules, load_font, svgdownload, fetchJson } from "utils";
 import { get_logos } from "logos";
-import { TeamSelector } from "./team-selector.js";
+import { scheduledGames } from "./mlb2023-schedule.js";
+import { GameResult } from "GameResult";
+import { TeamSelector } from "./team-selector.js?v=0803";
 
 const svgTemplate = `
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" viewBox="-1200 -1200 2400 2400">
@@ -550,20 +552,36 @@ const tweet = ({ team, record, svg }) => {
   const wins = [...svg.querySelectorAll(`[data-winner="${team}"]`)];
   const losses = [...svg.querySelectorAll(`[data-loser="${team}"]`)];
   const vsLeague = ["AL", "NL"]
+    .sort((a, b) => a === Teams.league(team) ? -1 : 1)
     .map((league) => {
       const win = wins.filter((c) => Teams.league(c.dataset.opponent) === league).length;
       const loss = losses.filter((c) => Teams.league(c.dataset.opponent) === league).length;
-      return { win, loss, league };
+      return { win, loss, league, division: "" };
     })
-    .sort((a, b) => {
-      return (b.win + b.loss) - (a.win + a.loss);
+    ;
+
+  const vsDivision = ["AL", "NL"]
+    .sort((a, b) => a === Teams.league(team) ? -1 : 1)
+    .map((league) => {
+      return ["East", "Central", "West"].map((division) => ({ league, division }));
     })
-    .map(({ league, win, loss }) => `${win}-${loss} vs ${league}`);
+    .flat()
+    .map(({ league, division }) => {
+      const arc = svg.getElementById(`${league}${division}`);
+      const win = arc.dataset.win;
+      const loss = arc.dataset.loss;
+      return { win, loss, league, division };
+    })
+    ;
+
+  const ja = team === "Angels" ? "#エンゼルス" : "";
   return [
-    `2023 ${team} are ${record}. ${Teams.hashtag(team)}`,
-    ...vsLeague,
-    `#mlb #HeadToHead `
-  ].join("\n");
+    `2023 ${team} are ${record}. ${Teams.hashtag(team)} ${ja}`,
+    `#HeadToHead `,
+    [...vsLeague, ...vsDivision].map(({ win, loss, league, division }) => `${win}-${loss} vs ${[league, division].join(" ")}`),
+  ]
+    .flat()
+    .join("\n");
 }
 
 async function downloadHandler(detail) {
@@ -603,6 +621,36 @@ async function downloadHandler(detail) {
   console.log(tweet({ team, record, svg }));
 }
 
+const gamesToday = () => {
+  return fetchJson("https://statsapi.mlb.com/api/v1/schedule?sportId=1")
+    .then((input) => {
+      const data = input.dates[0].games
+        .filter((g) => !g.resumeGameDate)
+        .map((g) => ({
+          gamePk: g.gamePk,
+          date: g.officialDate,
+          road: Teams.nickname(g.teams.away.team.name),
+          home: Teams.nickname(g.teams.home.team.name),
+          score: [g.teams.away.score, g.teams.home.score].join(" - "),
+          status: g.status.detailedState,
+        }))
+        .filter(({ status }) => ["Final", "Game Over", "Completed Early"].includes(status))
+        ;
+      return data;
+    });
+}
+
+const merge = (scheduled, results) => {
+  return scheduled
+    .map((g) => {
+      const obj = results.find((o) => o.gamePk === g.gamePk);
+      if (!obj) return g;
+      const r = new GameResult(obj);
+      const [date, winner, loser, score] = [r.date, r.winner, r.loser, obj.score];
+      return Object.assign(g, { date, winner, loser, score });
+    });
+}
+
 class MlbH2h extends HTMLElement {
   static get observedAttributes() {
     return ["team"];
@@ -614,8 +662,9 @@ class MlbH2h extends HTMLElement {
     this.render();
     this.container = self.shadowRoot.querySelector(".canvas");
 
-    document.addEventListener("ResultsLoaded", ({ detail }) => {
-      self.data = detail;
+    document.addEventListener("ResultsLoaded", async ({ detail }) => {
+      const today = await gamesToday();
+      self.data = merge(scheduledGames, detail.concat(today));
       const team = self.getAttribute("team") || "Angels";
       const svg = create_chart(self.data, team, self);
       self.container.replaceChildren(svg);
@@ -669,6 +718,7 @@ class MlbH2h extends HTMLElement {
 
   connectedCallback() {
     const self = this;
+
     document.addEventListener("DownloadSVG", ({ detail }) => {
       const team = self.getAttribute("team") || "Angels";
       const opts = Object.assign({
@@ -678,15 +728,27 @@ class MlbH2h extends HTMLElement {
       }, detail);
       downloadHandler(opts);
     });
+
+    document.addEventListener("UpdateResults", async ({ detail }) => {
+      const today = await gamesToday();
+      document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: today }));
+    });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
+    const self = this;
+    const root = this.shadowRoot;
+    const container = root.querySelector(".canvas");
+
+    root.querySelector("team-selector").setAttribute("team", this.getAttribute("team"));
+
     if (!this.data) return;
     if (name === "team") {
-      const self = this;
       const team = newValue;
       const svg = create_chart(self.data, team);
-      self.container.replaceChildren(svg);
+      container.replaceChildren(svg);
+
+      root.querySelector("team-selector").setAttribute("team", team);
     }
   }
 }
