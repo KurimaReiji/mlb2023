@@ -42,7 +42,7 @@ import { fetchJson } from "utils";
 import { GameResult } from "GameResult";
 import { MlbH2h } from "h2h";
 
-const results = await fetchJson("https://kurimareiji.github.io/npb2023-results/npb2023-results.json");
+const results = await fetchJson("https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json");
 document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: results }));
   </script>
   <script type="module">
