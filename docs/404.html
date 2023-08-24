@@ -47,7 +47,7 @@
 import { MlbRouter, locationHandler } from "router";
 import { MlbAbove500 } from "above500";
 import { fetchJson } from "utils";
-import { MlbTeams as Teams } from "teams";
+import { MlbTeams as Teams, toNicknames } from "teams";
 import { toGameResult} from "GameResult";
 
 const gamesToday = () => {
@@ -75,7 +75,7 @@ Promise.all([
 ])
   .then(([past, today]) => {
     const recent = today.filter((t) => !past.find((g) => g.gamePk === t.gamePk));
-    const data = past.concat(recent);
+    const data = past.concat(recent).map(toNicknames).map(toGameResult);
     document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: data}));
   })
   .catch(console.error);
