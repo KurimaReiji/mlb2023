@@ -46,17 +46,36 @@
   <script type="module">
 import { MlbRouter, locationHandler } from "router";
 import { MlbAbove500 } from "above500";
-import { fetchOptions, responseToJson } from "utils";
+import { fetchJson } from "utils";
 import { toNicknames } from "teams";
 import { toGameResult} from "GameResult";
 
-const json = "https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json";
-fetch(json, {
-    cache: "no-cache",
-  })
-  .then(responseToJson)
-  .then(inputs => inputs.map(toNicknames).map(toGameResult))
-  .then(data=>{
+const gamesToday = () => {
+  return fetchJson("https://statsapi.mlb.com/api/v1/schedule?sportId=1")
+    .then((input) => {
+      const data = input.dates[0].games
+        .filter((g) => !g.resumeGameDate)
+        .map((g) => ({
+          gamePk: g.gamePk,
+          date: g.officialDate,
+          road: Teams.nickname(g.teams.away.team.name),
+          home: Teams.nickname(g.teams.home.team.name),
+          score: [g.teams.away.score, g.teams.home.score].join(" - "),
+          status: g.status.detailedState,
+        }))
+        .filter(({ status }) => ["Final", "Game Over", "Completed Early"].includes(status))
+        ;
+      return data;
+    });
+}
+
+Promise.all([
+  fetchJson("https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json"),
+  gamesToday()
+])
+  .then(([past, today]) => {
+    const recent = today.filter((t) => !past.find((g) => g.gamePk === t.gamePk));
+    const data = past.concat(recent);
     document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: data}));
   })
   .catch(console.error);
