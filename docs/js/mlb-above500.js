@@ -33,7 +33,7 @@ const svgTemplate = `
       stroke-width: 1;
     }
     .tic-label {
-      font-size: var(--small-font-size, 18px);
+      font-size: var(--small-font-size, 12px);
       font-family: 'Noto Sans', sans-serif;
       alignment-baseline: middle;
     }
@@ -295,7 +295,7 @@ const setup = ({ league, division, series, width, height }) => {
     params[prop] = getComputedStyle(shadow().querySelector("div")).getPropertyValue(`--${prop}`);
   });
 
-  const numGames = Math.max(...series.map(({ history }) => history.length));
+  const numGames = 162; //Math.max(...series.map(({ history }) => history.length));
   const xDomain = [0, numGames];
   const xRange = [Number(params["padding-left"]), width - Number(params["padding-right"])];
 
@@ -324,8 +324,9 @@ const setup = ({ league, division, series, width, height }) => {
     .filter((n) => n < yDomain[0] && n > yDomain[1])
     .map((n) => ({ x: xDomain[0], y: n }));
 
-  const xTics = "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160"
+  const xTics = "0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,162"
     .split(",")
+    .map((s)=>Number(s))
     .filter((n) => n <= xDomain[1])
     .map((n) => ({ x: n, y: yDomain[1] }));
 
@@ -368,7 +369,8 @@ const update_tics = ({ svg, yTics, xTics, xDomain, yDomain, to_vx, to_vy }) => {
   svg.getElementById("yTics").replaceChildren(...ys);
 
   const xs = xTics
-    .filter((xy, _, a) => (a.length > 12 ? xy.x % 20 === 0 : true))
+    //.filter((xy, _, a) => (a.length > 12 ? xy.x % 20 === 0 : true))
+    .filter((xy, _, a) => (xy.x % 10 === 0 || xy.x === 162))
     .map(({ x, y }) => {
       const d = `M ${to_vx(x)} ${to_vy(yDomain[0])} L ${to_vx(x)} ${to_vy(yDomain[1])}`;
       const tic = svg.querySelector("#xTics path").cloneNode(true);
@@ -380,7 +382,11 @@ const update_tics = ({ svg, yTics, xTics, xDomain, yDomain, to_vx, to_vy }) => {
       label.textContent = x;
       label.dataset.x = x;
       const grp = svg.querySelector("#xTics g").cloneNode(true);
-      grp.replaceChildren(tic, label);
+      if (x === 162) {
+        grp.replaceChildren(tic);
+      } else {
+        grp.replaceChildren(tic, label);
+      }
       return grp;
     });
   svg.getElementById("xTics").replaceChildren(...xs);
