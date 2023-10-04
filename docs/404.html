@@ -71,10 +71,9 @@ const gamesToday = () => {
 
 Promise.all([
   fetchJson("https://kurimareiji.github.io/mlb2023-results/mlb2023-results.json"),
-  gamesToday()
 ])
   .then(([past, today]) => {
-    const recent = today.filter((t) => !past.find((g) => g.gamePk === t.gamePk));
+    const recent = [];//today.filter((t) => !past.find((g) => g.gamePk === t.gamePk));
     const data = past.concat(recent).map(toNicknames).map(toGameResult);
     document.dispatchEvent(new CustomEvent("ResultsLoaded", { detail: data}));
   })

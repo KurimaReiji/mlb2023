@@ -663,7 +663,7 @@ class MlbH2h extends HTMLElement {
     this.container = self.shadowRoot.querySelector(".canvas");
 
     document.addEventListener("ResultsLoaded", async ({ detail }) => {
-      const today = await gamesToday();
+      const today = [];//await gamesToday();
       self.data = merge(scheduledGames, detail.concat(today));
       const team = self.getAttribute("team") || "Angels";
       const svg = create_chart(self.data, team, self);
