@@ -239,7 +239,7 @@ const add_place = (obj, idx, ary) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const inputs = await (await fetch("./bestRecord.json")).json();
+  const inputs = await (await fetch("./bestRecord.json",{cache: "no-cache"})).json();
 
   //console.log(inputs);
 
